@@ -1,0 +1,6 @@
+org\openmrs\module\healthassignment\MyFirstMavenModule.class
+org\openmrs\module\healthassignment\api\db\hibernate\HibernateMyFirstMavenModuleDAO.class
+org\openmrs\module\healthassignment\api\MyFirstMavenModuleService.class
+org\openmrs\module\healthassignment\api\db\MyFirstMavenModuleDAO.class
+org\openmrs\module\healthassignment\MyFirstMavenModuleActivator.class
+org\openmrs\module\healthassignment\api\impl\MyFirstMavenModuleServiceImpl.class
