@@ -18,6 +18,7 @@
     } );
 </script>
 <div class="container">
+
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">List of Patients</h3>
@@ -36,6 +37,7 @@
     </tr>
     </thead>
     <tbody>
+
     <c:forEach var="summary" items="${detail}" varStatus="status">
         <tr>
             <td>${summary.encounterType.name}</td>

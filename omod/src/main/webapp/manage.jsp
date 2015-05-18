@@ -19,6 +19,34 @@
 </script>
 
 <div class="container">
+    <p>Required fields are marked with an asterisk*</p>
+    <form action="<c:url value='create.form' />" method="post">
+        <label for="fname">*First Name:</label>
+        <input type="text" name="fname" id="fname" required>
+        <br/>
+        <label for="mname">*Middle Name:</label>
+        <input type="text" name="mname" id="mname" required>
+        <br/>
+        <label for="lname">*Last Name:</label>
+        <input type="text" name="lname" id="lname" required>
+        <br/>
+        <label for="age">*Age:</label>
+        <input type="number" name="age" id="age" required>
+        <br/>
+        <label >*Select gender:</label>
+        <input type="radio" name="sex" value="male" checked>Male
+        <br>
+        <input type="radio" name="sex" value="female">Female
+        <br/>
+        <label for="address">*Address:</label>
+        <input type="text" name="address" id="address" required>
+        <br/>
+        <label for="pid">*ID number:</label>
+        <input type="number" name="pid" id="pid" required>
+        <br/>
+        <button>Save</button>
+
+    </form>
 <div class="panel panel-primary">
     <div class="panel-heading">
         <h3 class="panel-title"><b>List of Patients</b></h3>
