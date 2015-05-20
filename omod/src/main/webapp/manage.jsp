@@ -21,6 +21,7 @@
 <div class="container">
     <p>Required fields are marked with an asterisk*</p>
     <form action="<c:url value='create.form' />" method="post">
+        <input type="hidden" name="id" value="${uid}">
         <label for="fname">*First Name:</label>
         <input type="text" name="fname" id="fname" required>
         <br/>
@@ -33,10 +34,19 @@
         <label for="age">*Age:</label>
         <input type="number" name="age" id="age" required>
         <br/>
+        <label for="birthdate">*Birth Date:</label>
+        <input type="text" name="birthdate" id="birthdate" required>
+        <br/>
         <label >*Select gender:</label>
         <input type="radio" name="sex" value="male" checked>Male
         <br>
         <input type="radio" name="sex" value="female">Female
+        <br/>
+        <label for="country">*Country:</label>
+        <input type="text" name="country" id="country" required>
+        <br/>
+        <label for="county">*County:</label>
+        <input type="text" name="county" id="county" required>
         <br/>
         <label for="address">*Address:</label>
         <input type="text" name="address" id="address" required>

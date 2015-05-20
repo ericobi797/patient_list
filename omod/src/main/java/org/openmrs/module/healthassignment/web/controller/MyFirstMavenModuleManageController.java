@@ -15,10 +15,10 @@ package org.openmrs.module.healthassignment.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PersonName;
+import org.openmrs.*;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.idgen.service.IdentifierSourceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.util.*;
 
 /**
  * The main controller.
@@ -43,24 +42,65 @@ public class  MyFirstMavenModuleManageController {
 		//model.addAttribute("user", Context.getAuthenticatedUser());
 		List<Patient> allPatients = Context.getPatientService().getAllPatients();
 		model.addAttribute("listPatient", allPatients);
+		String uniqueID = UUID.randomUUID().toString();
+		model.addAttribute("uid", uniqueID);
 	}
+
 	@RequestMapping(value = "/module/healthassignment/create", method = RequestMethod.POST)
 	public ModelAndView create(@RequestParam(value = "fname", required = false) String fname,
 							   @RequestParam(value = "lname", required = false) String lname,
 							   @RequestParam(value = "mname", required = false) String mname,
-							   @RequestParam(value = "id", required = false) String pid
-	){
+							   @RequestParam(value = "pid", required = false) int pid,
+							   @RequestParam(value = "address") String address1,
+							   @RequestParam(value = "sex") String gender,
+							   @RequestParam(value = "age") int age,
+							   @RequestParam(value = "country") String country,
+							   @RequestParam(value = "county") String province,
+							   @RequestParam(value = "birthdate") String date
+	) throws Exception {
 		ModelAndView model = new ModelAndView();
 		Patient patient = new Patient();
-		String givenName = fname + mname;
-		PatientIdentifier id = new PatientIdentifier(pid, Context.getPatientService().getPatientIdentifierType(3), Context.getLocationService().getDefaultLocation());
-		String gender = "Male";
+		PersonName personName = new PersonName();
+		personName.setFamilyName(lname);
+		personName.setMiddleName(mname);
+		personName.setGivenName(fname);
+		//personName.setPreferred(true);
+		PersonAddress personAddress = new PersonAddress();
+		personAddress.setCountry(country);
+		personAddress.setStateProvince(province);
+		personAddress.setAddress1(address1);
+		//personAddress.setPreferred(true);
+		Date birthdate = null;
+		birthdate = Context.getDateFormat().parse(date);
+		patient.setBirthdateFromAge(age, birthdate);
 		patient.setGender(gender);
-		PersonName pn = new PersonName(givenName, null, lname);
-		patient.addName(pn);
+		patient.addAddress(personAddress);
+		patient.addName(personName);
+//		patient.setId(pid);
+
+		/*List<PatientIdentifierType> patientIdTypes = Context.getPatientService().getAllPatientIdentifierTypes();
+		PatientIdentifier patientIdentifier = new PatientIdentifier();
+		patientIdentifier.setIdentifier("05ee9cf4-7242-4a17-b4d4-00f707265c8a");
+		patientIdentifier.setIdentifierType(patientIdTypes.get(0));
+		patientIdentifier.setLocation(new Location(1));
+		patientIdentifier.setPreferred(true);
+
+		Set<PatientIdentifier> patientIdentifiers = new LinkedHashSet<PatientIdentifier>();
+		patientIdentifiers.add(patientIdentifier);*/
+		/*PatientService patientService = Context.getPatientService();
+		PatientIdentifier openmrsId = new PatientIdentifier();
+		PatientIdentifierType openmrsIdType = patientService.getPatientIdentifierTypeByUuid("dfacd928-0370-4315-99d7-6ec1c9f7ae76");
+		String generated = Context.getService(IdentifierSourceService.class).generateIdentifier(openmrsIdType, "healthassignment");
+		openmrsId.setIdentifierType(openmrsIdType);
+                openmrsId.setDateCreated(new Date());
+                openmrsId.setLocation(Context.getLocationService().getDefaultLocation());
+                openmrsId.setIdentifier(generated);
+                openmrsId.setVoided(false);
+
+		patient.addIdentifier(openmrsId);*/
 		Context.getPatientService().savePatient(patient);
-		List<Patient> allPatients = Context.getPatientService().getAllPatients();
-		model.addObject("listPatient", allPatients);
+		//List<Patient> allPatients = Context.getPatientService().getAllPatients();
+		//model.addObject("listPatient", allPatients);
 		model.addObject("msg","Patient Added Successfully");
 		model.setViewName("manage");
 		return model;
